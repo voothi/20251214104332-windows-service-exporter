@@ -27,11 +27,39 @@ Add-Type -AssemblyName PresentationFramework
             <sys:String>Stopped</sys:String>
         </x:Array>
 
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" Grid.ColumnSpan="2" Background="#333333" BorderBrush="#555555" BorderThickness="1" />
+                <Path x:Name="Arrow" Grid.Column="1" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+            </Grid>
+        </ControlTemplate>
+
         <Style TargetType="ComboBox">
-             <Setter Property="Background" Value="#333333"/>
              <Setter Property="Foreground" Value="White"/>
+             <Setter Property="Background" Value="#333333"/>
              <Setter Property="BorderBrush" Value="#555555"/>
-             <Setter Property="Padding" Value="4"/>
+             <Setter Property="Template">
+                 <Setter.Value>
+                     <ControlTemplate TargetType="ComboBox">
+                         <Grid>
+                             <ToggleButton Name="ToggleButton" Template="{StaticResource ComboBoxToggleButton}" Grid.Column="2" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press"/>
+                             <ContentPresenter Name="ContentSite" IsHitTestVisible="False"  Content="{TemplateBinding SelectionBoxItem}" Margin="6,3,23,3" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                             <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                 <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                     <Border x:Name="DropDownBorder" Background="#333333" BorderThickness="1" BorderBrush="#555555"/>
+                                     <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                     </ScrollViewer>
+                                 </Grid>
+                             </Popup>
+                         </Grid>
+                     </ControlTemplate>
+                 </Setter.Value>
+             </Setter>
         </Style>
         <Style TargetType="ComboBoxItem">
              <Setter Property="Background" Value="#333333"/>
