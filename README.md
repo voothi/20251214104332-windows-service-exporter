@@ -1,7 +1,6 @@
-# Service State Manager
-
-[![v1.0.12](https://img.shields.io/badge/version-v1.0.12-blue)](docs/release-notes.md)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+# Windows Service Manager & Comparator
+![Version](https://img.shields.io/badge/version-v1.0.18-blue.svg)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A PowerShell tool to manage Windows Service configurations by exporting their states to JSON and restoring them when needed.
 
