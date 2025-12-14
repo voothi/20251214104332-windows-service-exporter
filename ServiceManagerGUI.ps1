@@ -145,13 +145,13 @@ $btnLoadConfig.Add_Click({
 
 # Export New (Runs script)
 $btnExportNew.Add_Click({
-        $outDir = "$PSScriptRoot\configs"
+        $outDir = "$PSScriptRoot\exports"
         if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir | Out-Null }
     
         # Run the script in a new window
         Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$PSScriptRoot\ManageServices.ps1`" -Mode Export -ConfigPath `"$outDir\$(Get-Date -Format 'yyyyMMddHHmmss')-windows-services.json`"" -Wait
     
-        [System.Windows.MessageBox]::Show("Export complete. Please load the new file from the 'configs' directory.", "Info", 0, 64)
+        [System.Windows.MessageBox]::Show("Export complete. Please load the new file from the 'exports' directory.", "Info", 0, 64)
     })
 
 # Filter Text Change

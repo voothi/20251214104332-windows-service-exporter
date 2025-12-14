@@ -8,6 +8,8 @@ A PowerShell tool to manage Windows Service configurations by exporting their st
 - [Usage](#usage)
     - [Exporting Services (Unload)](#exporting-services-unload)
     - [Restoring Services (Load)](#restoring-services-load)
+- [Directory Structure](#directory-structure)
+- [AI Optimization Guide](#ai-optimization-guide)
 - [Release Notes](#release-notes)
 - [License](#license)
 
@@ -37,7 +39,7 @@ Save the state of services to a JSON file.
 ```
 
 -   **-ServiceNames**: (Optional) List of service names to export. If omitted, ALL services are exported.
--   **Output**: A file named `TIMESTAMP-windows-services.json` in the `.\configs` directory.
+-   **Output**: A file named `TIMESTAMP-windows-services.json` in the `.\exports` directory.
 
 ### GUI Interface (ServiceManagerGUI)
 For a visual interface to manage configurations:
@@ -63,8 +65,20 @@ Apply a configuration from a JSON file.
 
 [Back to Top](#table-of-contents)
 
+## Directory Structure
+-   **`\configs`**: Permanent storage for your reference configurations (e.g., `final-optimized-config.json`, `reference-optimized.json`). Use this for files you want to keep and load often.
+-   **`\exports`**: Default location for new snapshots exported from your system.
+
+## AI Optimization Guide
+Want to optimize your services but don't know which ones to disable?
+We've included a guide with a prompt you can use with AI assistants (like ChatGPT/Gemini).
+
+👉 **[Read the AI Optimization Guide](ai-optimization-guide.md)**
+
+[Back to Top](#table-of-contents)
+
 ## Release Notes
-See [RELEASE_NOTES.md](release-notes.md).
+See [release-notes.md](release-notes.md).
 
 ## License
 [MIT](LICENSE)

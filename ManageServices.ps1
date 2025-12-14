@@ -24,7 +24,7 @@ function Get-Timestamp {
 if ($Mode -eq "Export") {
     # Determine output path
     if (-not $ConfigPath) {
-        $outputDir = ".\out"
+        $outputDir = ".\exports"
         if (-not (Test-Path $outputDir)) {
             New-Item -ItemType Directory -Path $outputDir | Out-Null
         }
