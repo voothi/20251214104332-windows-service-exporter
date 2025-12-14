@@ -230,7 +230,8 @@ Add-Type -AssemblyName PresentationFramework
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/> <!-- Batch Edit -->
+                    <RowDefinition Height="Auto"/> <!-- Save -->
                 </Grid.RowDefinitions>
 
                 <!-- Loaders -->
@@ -266,7 +267,7 @@ Add-Type -AssemblyName PresentationFramework
                 <!-- Diff Grid -->
                 <DataGrid Grid.Row="2" Name="dgDiff" AutoGenerateColumns="False" CanUserAddRows="False"
                           Background="#252526" RowBackground="#252526" AlternatingRowBackground="#2e2e2e"
-                          Foreground="White" HeadersVisibility="Column" SelectionMode="Single"
+                          Foreground="White" HeadersVisibility="Column" SelectionMode="Extended"
                           RowStyle="{StaticResource DiffRowStyle}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="150"/>
@@ -293,8 +294,30 @@ Add-Type -AssemblyName PresentationFramework
                     </DataGrid.Columns>
                 </DataGrid>
 
+                <!-- Batch Edit Plan -->
+                <GroupBox Grid.Row="3" Header="Batch Edit Plan Services">
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Label Content="Set PLAN Start:"/>
+                        <ComboBox Name="cmbPlanBatchStart" Width="100" Margin="5">
+                            <ComboBoxItem Content="-- No Change --" IsSelected="True"/>
+                            <ComboBoxItem Content="Automatic"/>
+                            <ComboBoxItem Content="Manual"/>
+                            <ComboBoxItem Content="Disabled"/>
+                        </ComboBox>
+
+                        <Label Content="Set PLAN Status:"/>
+                        <ComboBox Name="cmbPlanBatchStatus" Width="100" Margin="5">
+                            <ComboBoxItem Content="-- No Change --" IsSelected="True"/>
+                            <ComboBoxItem Content="Running"/>
+                            <ComboBoxItem Content="Stopped"/>
+                        </ComboBox>
+
+                        <Button Name="btnApplyPlanBatch" Content="Apply to Selected" Background="#007acc"/>
+                    </StackPanel>
+                </GroupBox>
+
                 <!-- Save Plan -->
-                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                     <Button Name="btnSavePlan" Content="💾 Save PLAN As New Version..." Background="#2a9d8f"/>
                 </StackPanel>
             </Grid>
@@ -329,6 +352,9 @@ $btnRunCompare = $window.FindName("btnRunCompare")
 $chkShowDiffs = $window.FindName("chkShowDiffs")
 $dgDiff = $window.FindName("dgDiff")
 $btnSavePlan = $window.FindName("btnSavePlan")
+$cmbPlanBatchStart = $window.FindName("cmbPlanBatchStart")
+$cmbPlanBatchStatus = $window.FindName("cmbPlanBatchStatus")
+$btnApplyPlanBatch = $window.FindName("btnApplyPlanBatch")
 
 # Global State
 $global:currentServices = @()
@@ -505,6 +531,28 @@ $btnLoadPlan.Add_Click({
 
 $btnRunCompare.Add_Click({
         Update-DiffGrid
+    })
+
+$btnApplyPlanBatch.Add_Click({
+        $selected = $dgDiff.SelectedItems
+        if ($selected.Count -eq 0) { return }
+        
+        $newStart = $cmbPlanBatchStart.Text
+        $newStatus = $cmbPlanBatchStatus.Text
+        
+        foreach ($row in $selected) {
+            if ($newStart -ne "-- No Change --") { $row.PlanStart = $newStart }
+            if ($newStatus -ne "-- No Change --") { $row.PlanStatus = $newStatus }
+            
+            # Recalculate Change Status for Highlighting
+            $bStart = $row.BaseStart
+            $bStatus = $row.BaseStatus
+            $pStart = $row.PlanStart
+            $pStatus = $row.PlanStatus
+            
+            $row.IsChanged = ($bStart -ne $pStart) -or ($bStatus -ne $pStatus)
+        }
+        $dgDiff.Items.Refresh()
     })
 
 $chkShowDiffs.Add_Checked({ Update-DiffGrid })
