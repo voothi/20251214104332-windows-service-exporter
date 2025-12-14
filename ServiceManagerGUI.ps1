@@ -14,8 +14,30 @@ Add-Type -AssemblyName PresentationFramework
 [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="Service Manager GUI v1.1" Height="700" Width="1000" Background="#1e1e1e" Foreground="White">
     <Window.Resources>
+        <x:Array x:Key="StartTypeOptions" Type="sys:String">
+            <sys:String>Automatic</sys:String>
+            <sys:String>Manual</sys:String>
+            <sys:String>Disabled</sys:String>
+        </x:Array>
+        <x:Array x:Key="StatusOptions" Type="sys:String">
+            <sys:String>Running</sys:String>
+            <sys:String>Stopped</sys:String>
+        </x:Array>
+
+        <Style TargetType="ComboBox">
+             <Setter Property="Background" Value="#333333"/>
+             <Setter Property="Foreground" Value="White"/>
+             <Setter Property="BorderBrush" Value="#555555"/>
+             <Setter Property="Padding" Value="4"/>
+        </Style>
+        <Style TargetType="ComboBoxItem">
+             <Setter Property="Background" Value="#333333"/>
+             <Setter Property="Foreground" Value="White"/>
+        </Style>
+
         <Style TargetType="Button">
             <Setter Property="Background" Value="#333333"/>
             <Setter Property="Foreground" Value="White"/>
@@ -226,8 +248,20 @@ Add-Type -AssemblyName PresentationFramework
                         <DataGridTextColumn Header="Base Status" Binding="{Binding BaseStatus}" IsReadOnly="True" Width="80" Foreground="Gray"/>
                         
                         <!-- Plan Columns (Editable) -->
-                        <DataGridTextColumn Header="PLAN Start" Binding="{Binding PlanStart}" Width="100" FontWeight="Bold"/>
-                        <DataGridTextColumn Header="PLAN Status" Binding="{Binding PlanStatus}" Width="100" FontWeight="Bold"/>
+                        <DataGridTemplateColumn Header="PLAN Start" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{StaticResource StartTypeOptions}" SelectedValue="{Binding PlanStart, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="PLAN Status" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{StaticResource StatusOptions}" SelectedValue="{Binding PlanStatus, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
