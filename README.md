@@ -1,4 +1,4 @@
-# Windows Service Manager & Comparator
+# Windows Service Exporter
 ![Version](https://img.shields.io/badge/version-v1.0.18-blue.svg)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
