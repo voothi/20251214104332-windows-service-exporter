@@ -1,48 +1,41 @@
-# Get the current date and time for a unique filename
+# Get current date for filename
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $outputFile = ".\Windows11_Services_$timestamp.txt"
 
-Write-Host "Reading Windows 11 Services and checking Registry for Triggers..." -ForegroundColor Cyan
+Write-Host "Reading Services and checking Triggers..." -ForegroundColor Cyan
 
-# Get all services, sort them by DisplayName (like services.msc), and process each one
-$servicesList = Get-Service | Sort-Object DisplayName | ForEach-Object {
+# Process services
+$results = Get-Service | Sort-Object DisplayName | ForEach-Object {
+    $s = $_
+    $name = $s.Name
+    $baseStart = $s.StartType
     
-    # Get basic properties
-    $name = $_.Name
-    $displayName = $_.DisplayName
-    $status = $_.Status
-    $baseStartType = $_.StartType # Automatic, Manual, or Disabled
-
-    # Registry path where service config is stored
+    # Define the Registry Path for this service
     $regPath = "HKLM:\SYSTEM\CurrentControlSet\Services\$name"
     $triggerPath = "$regPath\TriggerInfo"
-    
-    # Default label is what Get-Service reports
-    $finalStartType = "$baseStartType"
 
-    # Check Registry to see if it's a "Trigger Start" service
-    # We wrap this in try/catch in case of permission issues (though read is usually fine)
-    try {
-        if ($baseStartType -ne "Disabled") {
-            if (Test-Path $triggerPath) {
-                $finalStartType = "$baseStartType (Trigger Start)"
-            }
+    # Default value
+    $finalStart = "$baseStart"
+
+    # Check Registry for Trigger Info
+    # If the subkey 'TriggerInfo' exists, Windows appends (Trigger Start)
+    if ($baseStart -ne "Disabled") {
+        if (Test-Path $triggerPath) {
+            $finalStart = "$baseStart (Trigger Start)"
         }
     }
-    catch {
-        # If we can't read the registry, keep the default StartType
-    }
 
-    # Create a custom object with the requested columns
+    # Return a custom object
     [PSCustomObject]@{
-        Status        = $status
-        Name          = $name
-        DisplayName   = $displayName
-        "Startup Type" = $finalStartType
+        Status      = $s.Status
+        Name        = $name
+        DisplayName = $s.DisplayName
+        StartType   = $finalStart
     }
 }
 
-# Output to text file
-$servicesList | Format-Table -AutoSize | Out-File -FilePath $outputFile -Encoding UTF8
+# Output to file
+# We use 'Out-String -Width 4096' to prevent the columns from being cut off (truncated)
+$results | Format-Table -AutoSize | Out-String -Width 4096 | Out-File -FilePath $outputFile -Encoding UTF8
 
-Write-Host "Done! The list has been saved to: $outputFile" -ForegroundColor Green
+Write-Host "Done! Saved to $outputFile" -ForegroundColor Green
