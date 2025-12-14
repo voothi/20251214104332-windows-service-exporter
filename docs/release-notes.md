@@ -1,5 +1,17 @@
 # Release Notes
 
+## v1.2.2 (2025-12-14)
+**Rebranding to Windows Service Exporter**
+
+### Highlights
+-   **New Name**: Project officially renamed to **Windows Service Exporter** to better reflect its primary capability of extracting and safeguarding service configurations.
+-   **Version Jump**: Skipped to v1.2.2 to mark the rebranding milestone.
+
+### Bugs
+-   Fixed minor title bar artifact in the GUI.
+
+---
+
 ## v1.0.18 (2025-12-14)
 **GUI Enhancements & Batch Editing**
 

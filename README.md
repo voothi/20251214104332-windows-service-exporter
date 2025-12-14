@@ -1,5 +1,5 @@
 # Windows Service Exporter
-![Version](https://img.shields.io/badge/version-v1.0.18-blue.svg)
+![Version](https://img.shields.io/badge/version-v1.2.2-blue.svg)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A PowerShell tool to manage Windows Service configurations by exporting their states to JSON and restoring them when needed.

@@ -15,7 +15,7 @@ Add-Type -AssemblyName PresentationFramework
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="# Windows Service Exporter v1.0.18" Height="600" Width="900" Background="#1e1e1e" Foreground="White">
+        Title="Windows Service Exporter v1.2.2" Height="600" Width="900" Background="#1e1e1e" Foreground="White">
     <Window.Resources>
         <x:Array x:Key="StartTypeOptions" Type="sys:String">
             <sys:String>Automatic</sys:String>
