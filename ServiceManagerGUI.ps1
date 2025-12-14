@@ -52,6 +52,13 @@ Add-Type -AssemblyName PresentationFramework
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="BorderBrush" Value="#555555"/>
+        </Style>
         <Style TargetType="TabItem">
             <Setter Property="Background" Value="#2d2d30"/>
             <Setter Property="Foreground" Value="#cccccc"/>
