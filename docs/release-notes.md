@@ -1,7 +1,16 @@
 # Release Notes
 
-## v1.0.2
+## v1.0.12
+### Features
+-   **GUI Interface**: Added `ServiceManagerGUI.ps1` for easy management of configurations.
+-   **Structure**: Organized project into `configs/` (references) and `exports/` (snapshots).
+-   **AI Guide**: Added `docs/ai-optimization-guide.md` with prompts for optimizing services.
 
+### Changes
+-   Default export location changed to `./exports`.
+-   Documentation moved to `./docs`.
+
+## v1.0.2
 ### Features
 -   **Export Mode**: Added ability to export service states (StartType, Status) to JSON.
 -   **Restore Mode**: Added ability to restore service states from JSON configuration files.
