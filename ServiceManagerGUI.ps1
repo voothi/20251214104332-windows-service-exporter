@@ -308,7 +308,7 @@ function Load-SystemState {
     
     # Run ManageServices.ps1 -Mode Export -Path $tempFile
     # We use Start-Process -Wait to ensure it finishes
-    $proc = Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File `"$script`" -Mode Export -Path `"$tempFile`"" -PassThru -NoNewWindow -Wait
+    $proc = Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File `"$script`" -Mode Export -ConfigPath `"$tempFile`"" -PassThru -NoNewWindow -Wait
     
     if (Test-Path $tempFile) {
         $json = Get-Content $tempFile -Raw | ConvertFrom-Json
@@ -478,7 +478,7 @@ $btnRestorePlan.Add_Click({
         $result = [System.Windows.MessageBox]::Show("Are you sure you want to APPLY this plan to the system?`nThis will change service states requiring Admin privileges.", "Confirm Apply", 4, 32)
         if ($result -eq 'Yes') {
             $script = "$PSScriptRoot\ManageServices.ps1"
-            Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File `"$script`" -Mode Restore -Path `"$tempPlan`"" -Verb RunAs
+            Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File `"$script`" -Mode Restore -ConfigPath `"$tempPlan`"" -Verb RunAs
         }
     })
 
@@ -490,7 +490,7 @@ $btnExportSystem.Add_Click({
     
         if ($dlg.ShowDialog() -eq $true) {
             $script = "$PSScriptRoot\ManageServices.ps1"
-            Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File `"$script`" -Mode Export -Path `"$dlg.FileName`"" -PassThru
+            Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File `"$script`" -Mode Export -ConfigPath `"$dlg.FileName`"" -PassThru
         }
     })
 
